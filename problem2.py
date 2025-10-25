@@ -163,20 +163,26 @@ def run_spark(paths: list[str], out_dir: Path) -> None:
     tlf["duration_min"] = (tlf["end_time"] - tlf["start_time"]).dt.total_seconds() / 60.0
     tlf = tlf[(tlf["duration_min"].notna()) & (tlf["duration_min"] > 0)]
 
-    # 5) Cluster summary (num apps + temporal span + duration stats)
+    # 5) Cluster summary — only 4 columns required by the assignment
     g = tlf.groupby("cluster_id", as_index=False)
     cluster_summary = g.agg(
-        num_apps=("application_id", "nunique"),
-        min_start=("start_time", "min"),
-        max_end=("end_time", "max"),
-        median_duration_s=("duration_min", lambda s: float(pd.Series(s).median()) * 60.0),
-        mean_duration_s=("duration_min", lambda s: float(pd.Series(s).mean()) * 60.0),
-        p95_duration_s=("duration_min", lambda s: float(pd.Series(s).quantile(0.95)) * 60.0),
-    )
-    cluster_summary = cluster_summary.sort_values("cluster_id")
+        num_applications=("application_id", "nunique"),
+        cluster_first_app=("start_time", "min"),
+        cluster_last_app=("end_time", "max"),
+    ).sort_values("cluster_id")
+
+    # 去掉时区并统一输出格式：YYYY-MM-DD HH:MM:SS
+    for c in ("cluster_first_app", "cluster_last_app"):
+        if pd.api.types.is_datetime64_any_dtype(cluster_summary[c]):
+            try:
+                cluster_summary[c] = cluster_summary[c].dt.tz_localize(None)
+            except Exception:
+                pass
+            cluster_summary[c] = cluster_summary[c].dt.strftime("%Y-%m-%d %H:%M:%S")
 
     out_summary = out_dir / "problem2_cluster_summary.csv"
     cluster_summary.to_csv(out_summary, index=False)
+
 
     # 6) Pretty stats.txt in expected style
     _write_pretty_stats(tlf, cluster_summary, out_dir)
