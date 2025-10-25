@@ -1,0 +1,11 @@
+log_entry,log_level
+"16/04/07 12:15:53 INFO storage.BlockManagerInfo: Removed broadcast_297_piece0 on mesos-slave-09:35076 in memory (size: 5.6 KB, free: 27.1 GB)",INFO
+"17/06/09 19:53:53 INFO python.PythonRunner: Times: total = 40, boot = 14, init = 26, finish = 0",INFO
+"17/06/09 12:01:08 INFO spark.CacheManager: Partition rdd_9023_1 not found, computing it",INFO
+17/06/08 13:44:16 INFO storage.BlockManager: Found block rdd_935_16 locally,INFO
+17/06/08 20:53:59 INFO executor.Executor: Running task 3.0 in stage 12566.0 (TID 502683),INFO
+"17/03/27 14:48:02 INFO BlockManagerInfo: Added broadcast_5_piece159 in memory on mesos-slave-07:51454 (size: 4.0 MB, free: 12.2 GB)",INFO
+17/06/07 17:12:21 INFO output.FileOutputCommitter: File Output Committer Algorithm version is 1,INFO
+17/06/08 14:57:04 INFO executor.Executor: Running task 30.0 in stage 120.0 (TID 5154),INFO
+17/02/01 21:39:52 INFO executor.CoarseGrainedExecutorBackend: Got assigned task 21923,INFO
+17/06/09 22:12:32 INFO output.FileOutputCommitter: Saved output of task 'attempt_201706092212_7121_m_000007_286121' to hdfs://10.10.34.11:9000/pjhe/test/67/_temporary/0/task_201706092212_7121_m_000007,INFO
